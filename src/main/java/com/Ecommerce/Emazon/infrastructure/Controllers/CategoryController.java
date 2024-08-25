@@ -2,6 +2,8 @@ package com.Ecommerce.Emazon.infrastructure.Controllers;
 
 import com.Ecommerce.Emazon.application.dto.CategoryDTO;
 import com.Ecommerce.Emazon.application.handler.CategoryHandler;
+import com.Ecommerce.Emazon.domain.util.Pageable.PageCustom;
+import com.Ecommerce.Emazon.domain.util.Pageable.PageRequestCustom;
 import com.Ecommerce.Emazon.infrastructure.jpaout.repositories.Category.CategoryJpaOut;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,8 +23,14 @@ public class CategoryController {
         return new ResponseEntity<>(newCategory, HttpStatus.CREATED);
     }
 
-//    @GetMapping
-//    public List<Category> findAll() {
-//        return categoryJpaOut.findAll();
-//    }
+    @GetMapping
+    public ResponseEntity<PageCustom<CategoryDTO>> listCategories(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "false") boolean ascending
+    ) {
+        PageRequestCustom pageRequestCustom = new PageRequestCustom(page, size, ascending);
+        PageCustom<CategoryDTO> categories = categoryHandler.listCategories(pageRequestCustom);
+        return ResponseEntity.ok(categories);
+    }
 }

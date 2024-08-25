@@ -7,6 +7,9 @@ import com.Ecommerce.Emazon.infrastructure.jpaout.mapper.JpaCategoryMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @AllArgsConstructor
 @Component
 public class CategoryJpaOut implements CategoryOut {
@@ -28,11 +31,11 @@ public class CategoryJpaOut implements CategoryOut {
         return jpaCategoryMapper.toDomain(savedEntity);
     }
 
-//    @Override
-//    public List<Category> findAll() {
-//        List<CategoryEntity> entities = categoryRepository.findAll();
-//        return entities.stream()
-//                .map(jpaCategoryMapper::toDomain)
-//                .toList();
-//    }
+    @Override
+    public List<Category> findAll() {
+        List<CategoryEntity> entities = categoryRepository.findAll();
+        return entities.stream()
+                .map(jpaCategoryMapper::toDomain)
+                .collect(Collectors.toList());
+    }
 }
