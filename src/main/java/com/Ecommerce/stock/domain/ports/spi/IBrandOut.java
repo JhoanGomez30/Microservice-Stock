@@ -4,6 +4,6 @@ import com.ecommerce.stock.domain.models.Brand;
 
 public interface IBrandOut {
 
-    boolean existsByName(String name);
+    boolean existByName(String name);
     Brand save(Brand brand);
 }

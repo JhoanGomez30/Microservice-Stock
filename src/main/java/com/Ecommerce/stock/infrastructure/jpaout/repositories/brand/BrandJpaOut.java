@@ -16,7 +16,7 @@ public class BrandJpaOut implements IBrandOut {
 
 
     @Override
-    public boolean existsByName(String name) {
+    public boolean existByName(String name) {
         return IBrandRepository.existsByName(name);
     }
 

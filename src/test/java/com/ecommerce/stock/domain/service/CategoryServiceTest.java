@@ -33,17 +33,17 @@ class CategoryServiceTest {
 
     @Test
     void testCreateCategory_Successful() {
-        String nombre = "Electronics";
-        String descripcion = "All electronic items";
+        String name = "Electronics";
+        String description = "All electronic items";
 
-        when(ICategoryOut.existByName(nombre)).thenReturn(false);
-        when(ICategoryOut.save(any(Category.class))).thenReturn(new Category(1L, nombre, descripcion));
+        when(ICategoryOut.existByName(name)).thenReturn(false);
+        when(ICategoryOut.save(any(Category.class))).thenReturn(new Category(1L, name, description));
 
-        Category result = categoryService.createCategory(nombre, descripcion);
+        Category result = categoryService.createCategory(name, description);
 
         assertNotNull(result);
-        assertEquals(nombre, result.getName());
-        assertEquals(descripcion, result.getDescription());
+        assertEquals(name, result.getName());
+        assertEquals(description, result.getDescription());
     }
 
     @Test
@@ -59,6 +59,7 @@ class CategoryServiceTest {
 
         assertEquals("Category already exist", exception.getMessage());
     }
+
     @Test
     void testListCategory_AscendingOrder() {
         List<Category> categories = Arrays.asList(

@@ -4,7 +4,6 @@ import com.ecommerce.stock.domain.exception.InvalidNameException;
 import com.ecommerce.stock.domain.models.Brand;
 import com.ecommerce.stock.domain.ports.api.IBrandIn;
 import com.ecommerce.stock.domain.ports.spi.IBrandOut;
-import com.ecommerce.stock.domain.ports.spi.ICategoryOut;
 import com.ecommerce.stock.domain.util.ValidateBrand;
 
 public class BrandService implements IBrandIn {
@@ -21,7 +20,7 @@ public class BrandService implements IBrandIn {
         ValidateBrand.validateNameBrand(name);
         ValidateBrand.validateDescriptionBrand(description);
 
-        if (brandOut.existsByName(name)){
+        if (brandOut.existByName(name)){
             String brandExist = "Brand already exist";
             throw new InvalidNameException(brandExist);
         }
