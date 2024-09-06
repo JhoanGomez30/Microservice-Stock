@@ -4,13 +4,9 @@ import com.ecommerce.stock.domain.models.Category;
 import com.ecommerce.stock.domain.util.Pageable.PageCustom;
 import com.ecommerce.stock.domain.util.Pageable.PageRequestCustom;
 
-public interface CategoryIn {
+public interface ICategoryIn {
 
     Category createCategory(String name, String description);
     PageCustom<Category> listCategory(PageRequestCustom pageRequestCustom);
-//    CategoryEntity getCategory (Long id);
-//
-//    void updateCategory(CategoryEntity category);
-//
-//    void deleteCategory(Long id);
+
 }

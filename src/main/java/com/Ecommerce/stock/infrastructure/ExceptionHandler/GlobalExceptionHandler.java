@@ -1,7 +1,7 @@
 package com.ecommerce.stock.infrastructure.exceptionhandler;
 
-import com.ecommerce.stock.domain.exception.InvalidDescriptionCategoryException;
-import com.ecommerce.stock.domain.exception.InvalidNameCategoryException;
+import com.ecommerce.stock.domain.exception.InvalidDescriptionException;
+import com.ecommerce.stock.domain.exception.InvalidNameException;
 import com.ecommerce.stock.infrastructure.exception.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,14 +12,14 @@ import org.springframework.web.context.request.WebRequest;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(InvalidNameCategoryException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidNameException(InvalidNameCategoryException ex, WebRequest request) {
+    @ExceptionHandler(InvalidNameException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidNameException(InvalidNameException ex, WebRequest request) {
         ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), "Invalid name");
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(InvalidDescriptionCategoryException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidDescriptionException(InvalidDescriptionCategoryException ex, WebRequest request) {
+    @ExceptionHandler(InvalidDescriptionException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidDescriptionException(InvalidDescriptionException ex, WebRequest request) {
         ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), "Invalid description");
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }

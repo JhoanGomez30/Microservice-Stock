@@ -1,9 +1,9 @@
 package com.ecommerce.stock.domain.service;
 
-import com.ecommerce.stock.domain.exception.InvalidNameCategoryException;
-import com.ecommerce.stock.domain.ports.api.CategoryIn;
+import com.ecommerce.stock.domain.exception.InvalidNameException;
+import com.ecommerce.stock.domain.ports.api.ICategoryIn;
 import com.ecommerce.stock.domain.models.Category;
-import com.ecommerce.stock.domain.ports.spi.CategoryOut;
+import com.ecommerce.stock.domain.ports.spi.ICategoryOut;
 import com.ecommerce.stock.domain.util.Pageable.PageCustom;
 import com.ecommerce.stock.domain.util.Pageable.PageRequestCustom;
 import com.ecommerce.stock.domain.util.ValidateCategory;
@@ -11,22 +11,22 @@ import com.ecommerce.stock.domain.util.ValidateCategory;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CategoryService implements CategoryIn {
+public class CategoryService implements ICategoryIn {
 
-    private final CategoryOut categoryOut;
+    private final ICategoryOut categoryOut;
 
-    public CategoryService(CategoryOut categoryOut) {
+    public CategoryService(ICategoryOut categoryOut) {
         this.categoryOut = categoryOut;
     }
 
     @Override
     public Category createCategory(String name, String description) {
-        ValidateCategory.validateName(name);
-        ValidateCategory.validateDescription(description);
+        ValidateCategory.validateNameCategory(name);
+        ValidateCategory.validateDescriptionCategory(description);
 
         if (categoryOut.existByName(name)) {
             String categoryExist = "Category already exist";
-            throw new InvalidNameCategoryException(categoryExist);
+            throw new InvalidNameException(categoryExist);
         }
 
         Category category = new Category(null, name, description);

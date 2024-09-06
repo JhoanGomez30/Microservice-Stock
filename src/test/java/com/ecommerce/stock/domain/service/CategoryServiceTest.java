@@ -1,8 +1,8 @@
 package com.ecommerce.stock.domain.service;
 
-import com.ecommerce.stock.domain.exception.InvalidNameCategoryException;
+import com.ecommerce.stock.domain.exception.InvalidNameException;
 import com.ecommerce.stock.domain.models.Category;
-import com.ecommerce.stock.domain.ports.spi.CategoryOut;
+import com.ecommerce.stock.domain.ports.spi.ICategoryOut;
 import com.ecommerce.stock.domain.util.Pageable.PageCustom;
 import com.ecommerce.stock.domain.util.Pageable.PageRequestCustom;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 class CategoryServiceTest {
 
     @Mock
-    private CategoryOut categoryOut;
+    private ICategoryOut ICategoryOut;
 
     @InjectMocks
     private CategoryService categoryService;
@@ -36,8 +36,8 @@ class CategoryServiceTest {
         String nombre = "Electronics";
         String descripcion = "All electronic items";
 
-        when(categoryOut.existByName(nombre)).thenReturn(false);
-        when(categoryOut.save(any(Category.class))).thenReturn(new Category(1L, nombre, descripcion));
+        when(ICategoryOut.existByName(nombre)).thenReturn(false);
+        when(ICategoryOut.save(any(Category.class))).thenReturn(new Category(1L, nombre, descripcion));
 
         Category result = categoryService.createCategory(nombre, descripcion);
 
@@ -51,13 +51,13 @@ class CategoryServiceTest {
         String nombre = "Electronics";
         String descripcion = "All electronic items";
 
-        when(categoryOut.existByName(nombre)).thenReturn(true);
+        when(ICategoryOut.existByName(nombre)).thenReturn(true);
 
-        InvalidNameCategoryException exception = assertThrows(InvalidNameCategoryException.class, () -> {
+        InvalidNameException exception = assertThrows(InvalidNameException.class, () -> {
             categoryService.createCategory(nombre, descripcion);
         });
 
-        assertEquals("El nombre de la categoria ya existe", exception.getMessage());
+        assertEquals("Category already exist", exception.getMessage());
     }
     @Test
     void testListCategory_AscendingOrder() {
@@ -67,7 +67,7 @@ class CategoryServiceTest {
                 new Category(3L, "Furniture", "Home and office furniture")
         );
 
-        when(categoryOut.findAll()).thenReturn(categories);
+        when(ICategoryOut.findAll()).thenReturn(categories);
 
         PageRequestCustom pageRequest = new PageRequestCustom(0, 2, true); // Orden ascendente, página 0, tamaño 2
         PageCustom<Category> result = categoryService.listCategory(pageRequest);
@@ -84,7 +84,7 @@ class CategoryServiceTest {
 
     @Test
     void testListCategory_EmptyPage() {
-        when(categoryOut.findAll()).thenReturn(Collections.emptyList());
+        when(ICategoryOut.findAll()).thenReturn(Collections.emptyList());
 
         PageRequestCustom pageRequest = new PageRequestCustom(0, 2, true);
         PageCustom<Category> result = categoryService.listCategory(pageRequest);

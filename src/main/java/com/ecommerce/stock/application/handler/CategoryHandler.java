@@ -3,7 +3,7 @@ package com.ecommerce.stock.application.handler;
 import com.ecommerce.stock.application.dto.CategoryDTO;
 import com.ecommerce.stock.application.mapper.CategoryMapper;
 import com.ecommerce.stock.domain.models.Category;
-import com.ecommerce.stock.domain.ports.api.CategoryIn;
+import com.ecommerce.stock.domain.ports.api.ICategoryIn;
 import com.ecommerce.stock.domain.util.Pageable.PageCustom;
 import com.ecommerce.stock.domain.util.Pageable.PageRequestCustom;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class CategoryHandler {
-    private final CategoryIn categoryIn;
+    private final ICategoryIn categoryIn;
     private final CategoryMapper categoryMapper;
 
     public CategoryDTO createCategory(CategoryDTO categoryDTO){
