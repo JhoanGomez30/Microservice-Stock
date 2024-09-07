@@ -1,8 +1,8 @@
 package com.ecommerce.stock.domain.ports.api;
 
 import com.ecommerce.stock.domain.models.Category;
-import com.ecommerce.stock.domain.util.Pageable.PageCustom;
-import com.ecommerce.stock.domain.util.Pageable.PageRequestCustom;
+import com.ecommerce.stock.domain.util.pagination.PageCustom;
+import com.ecommerce.stock.domain.util.pagination.PageRequestCustom;
 
 public interface ICategoryIn {
 

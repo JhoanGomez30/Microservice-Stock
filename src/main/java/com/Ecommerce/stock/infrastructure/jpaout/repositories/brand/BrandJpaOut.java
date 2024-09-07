@@ -7,25 +7,35 @@ import com.ecommerce.stock.infrastructure.jpaout.mapper.JpaBrandMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @AllArgsConstructor
 public class BrandJpaOut implements IBrandOut {
 
-    private final IBrandRepository IBrandRepository;
+    private final IBrandRepository brandRepository;
     private final JpaBrandMapper jpaBrandMapper;
 
 
     @Override
-    public boolean existByName(String name) {
-        return IBrandRepository.existsByName(name);
+    public boolean existsByName(String name) {
+        return brandRepository.existsByName(name);
     }
 
     @Override
     public Brand save(Brand brand) {
 
         BrandEntity brandEntity = jpaBrandMapper.toEntity(brand);
-        BrandEntity savedEntity = IBrandRepository.save(brandEntity);
+        BrandEntity savedEntity = brandRepository.save(brandEntity);
 
         return jpaBrandMapper.toDomain(savedEntity);
+    }
+
+    @Override
+    public List<Brand> findAll() {
+        List<BrandEntity> entities = brandRepository.findAll();
+        return entities.stream()
+                .map(jpaBrandMapper::toDomain)
+                .toList();
     }
 }

@@ -2,10 +2,10 @@ package com.ecommerce.stock.infrastructure.controllers;
 
 import com.ecommerce.stock.application.dto.CategoryDTO;
 import com.ecommerce.stock.application.handler.CategoryHandler;
-import com.ecommerce.stock.domain.util.Pageable.PageCustom;
-import com.ecommerce.stock.domain.util.Pageable.PageRequestCustom;
 import com.ecommerce.stock.infrastructure.jpaout.repositories.category.CategoryJpaOut;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,13 +26,9 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<PageCustom<CategoryDTO>> listCategories(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "true") boolean ascending
-    ) {
-        PageRequestCustom pageRequestCustom = new PageRequestCustom(page, size, ascending);
-        PageCustom<CategoryDTO> categories = categoryHandler.listCategories(pageRequestCustom);
+    public ResponseEntity<Page<CategoryDTO>> listCategories(Pageable pageable) {
+        // Llamar al handler para obtener la lista paginada y ordenada de categorías en forma de DTO
+        Page<CategoryDTO> categories = categoryHandler.listCategories(pageable);
         return ResponseEntity.ok(categories);
     }
 }

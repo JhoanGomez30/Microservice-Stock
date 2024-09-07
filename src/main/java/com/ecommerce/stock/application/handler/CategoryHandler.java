@@ -2,15 +2,15 @@ package com.ecommerce.stock.application.handler;
 
 import com.ecommerce.stock.application.dto.CategoryDTO;
 import com.ecommerce.stock.application.mapper.CategoryMapper;
+import com.ecommerce.stock.application.mapper.PageMapper;
 import com.ecommerce.stock.domain.models.Category;
 import com.ecommerce.stock.domain.ports.api.ICategoryIn;
-import com.ecommerce.stock.domain.util.Pageable.PageCustom;
-import com.ecommerce.stock.domain.util.Pageable.PageRequestCustom;
+import com.ecommerce.stock.domain.util.pagination.PageCustom;
+import com.ecommerce.stock.domain.util.pagination.PageRequestCustom;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -26,11 +26,20 @@ public class CategoryHandler {
         return categoryMapper.toDTO(newCategory);
     }
 
-    public PageCustom<CategoryDTO> listCategories(PageRequestCustom pageRequestCustom) {
-        PageCustom<Category> categoryPage = categoryIn.listCategory(pageRequestCustom);
-        List<CategoryDTO> dtoList = categoryPage.getContent().stream()
-                .map(categoryMapper::toDTO)
-                .collect(Collectors.toList());
-        return new PageCustom<>(dtoList, categoryPage.getTotalElements(), categoryPage.getTotalPages(), categoryPage.getCurrentPage(),categoryPage.isAscending());
+    public Page<CategoryDTO> listCategories(Pageable pageable) {
+        //parsear Pageable Spring a PageRequestCustom
+        PageRequestCustom pageRequestCustom = new PageRequestCustom(pageable.getPageNumber(),pageable.getPageSize(),pageable.getSort().isSorted());
+        //usar la interfaz de dominio
+        PageCustom<Category> pageCustom = categoryIn.listCategory(pageRequestCustom);
+        //convertir PageCustom a Page de Spring y mapearDTOS
+        return PageMapper.toSpringPage(
+                new PageCustom<>(
+                        pageCustom.getContent().stream().map(categoryMapper::toDTO).toList(),
+                        pageCustom.getTotalElements(),
+                        pageCustom.getTotalPages(),
+                        pageCustom.getCurrentPage(),
+                        pageCustom.isAscending()
+                )
+        );
     }
 }

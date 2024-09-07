@@ -1,4 +1,4 @@
-package com.ecommerce.stock.domain.util.Pageable;
+package com.ecommerce.stock.domain.util.pagination;
 
 public class PageRequestCustom {
 

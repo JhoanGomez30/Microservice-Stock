@@ -3,8 +3,8 @@ package com.ecommerce.stock.domain.service;
 import com.ecommerce.stock.domain.exception.InvalidNameException;
 import com.ecommerce.stock.domain.models.Category;
 import com.ecommerce.stock.domain.ports.spi.ICategoryOut;
-import com.ecommerce.stock.domain.util.Pageable.PageCustom;
-import com.ecommerce.stock.domain.util.Pageable.PageRequestCustom;
+import com.ecommerce.stock.domain.util.pagination.PageCustom;
+import com.ecommerce.stock.domain.util.pagination.PageRequestCustom;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 class CategoryServiceTest {
 
     @Mock
-    private ICategoryOut ICategoryOut;
+    private ICategoryOut categoryOut;
 
     @InjectMocks
     private CategoryService categoryService;
@@ -36,8 +36,8 @@ class CategoryServiceTest {
         String name = "Electronics";
         String description = "All electronic items";
 
-        when(ICategoryOut.existByName(name)).thenReturn(false);
-        when(ICategoryOut.save(any(Category.class))).thenReturn(new Category(1L, name, description));
+        when(categoryOut.existByName(name)).thenReturn(false);
+        when(categoryOut.save(any(Category.class))).thenReturn(new Category(1L, name, description));
 
         Category result = categoryService.createCategory(name, description);
 
@@ -51,7 +51,7 @@ class CategoryServiceTest {
         String nombre = "Electronics";
         String descripcion = "All electronic items";
 
-        when(ICategoryOut.existByName(nombre)).thenReturn(true);
+        when(categoryOut.existByName(nombre)).thenReturn(true);
 
         InvalidNameException exception = assertThrows(InvalidNameException.class, () -> {
             categoryService.createCategory(nombre, descripcion);
@@ -68,7 +68,7 @@ class CategoryServiceTest {
                 new Category(3L, "Furniture", "Home and office furniture")
         );
 
-        when(ICategoryOut.findAll()).thenReturn(categories);
+        when(categoryOut.findAll()).thenReturn(categories);
 
         PageRequestCustom pageRequest = new PageRequestCustom(0, 2, true); // Orden ascendente, página 0, tamaño 2
         PageCustom<Category> result = categoryService.listCategory(pageRequest);
@@ -85,7 +85,7 @@ class CategoryServiceTest {
 
     @Test
     void testListCategory_EmptyPage() {
-        when(ICategoryOut.findAll()).thenReturn(Collections.emptyList());
+        when(categoryOut.findAll()).thenReturn(Collections.emptyList());
 
         PageRequestCustom pageRequest = new PageRequestCustom(0, 2, true);
         PageCustom<Category> result = categoryService.listCategory(pageRequest);

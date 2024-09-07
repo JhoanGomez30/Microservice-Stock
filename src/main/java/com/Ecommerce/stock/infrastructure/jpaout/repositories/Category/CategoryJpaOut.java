@@ -8,34 +8,33 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
 public class CategoryJpaOut implements ICategoryOut {
 
-    private final ICategoryRepository ICategoryRepository;
+    private final ICategoryRepository categoryRepository;
     private final JpaCategoryMapper jpaCategoryMapper;
 
     @Override
     public boolean existByName(String name) {
-        return ICategoryRepository.existsByName(name);
+        return categoryRepository.existsByName(name);
     }
 
     @Override
     public Category save(Category category) {
 
         CategoryEntity entity = jpaCategoryMapper.toEntity(category);
-        CategoryEntity savedEntity = ICategoryRepository.save(entity);
+        CategoryEntity savedEntity = categoryRepository.save(entity);
 
         return jpaCategoryMapper.toDomain(savedEntity);
     }
 
     @Override
     public List<Category> findAll() {
-        List<CategoryEntity> entities = ICategoryRepository.findAll();
+        List<CategoryEntity> entities = categoryRepository.findAll();
         return entities.stream()
                 .map(jpaCategoryMapper::toDomain)
-                .collect(Collectors.toList());
+                .toList();
     }
 }
